@@ -1,58 +1,72 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
-import { getLineChartTestData } from "../testData/data";
-import { LineChart } from "../components/LineChart";
-import moment from "moment";
+import React from "react";
+import Animated from "react-native-reanimated";
+import Svg, { Path } from "react-native-svg";
+import { useTestLineChart } from "../useTestLineChart.hook";
+
+export const BUTTON_WIDTH = 150;
+const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 interface LineChartScreenProps {}
 
 export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
-  const [range, setRange] = useState<7 | 30 | 90>(7);
-  const [data, setData] = useState<{ date: string; value: number }[]>([]);
-
-  useEffect(() => {
-    getTestData();
-  }, []);
-
-  useEffect(() => {
-    getTestData();
-  }, [range]);
-
-  function getTestData() {
-    const testData = getLineChartTestData(range);
-    setData(testData);
-  }
-
-  const getButtonStyle = (value: number) => {
-    return value === range ? styles.buttonActive : styles.button;
-  };
+  const { containerRef, width, height, animatedChart, staticChart, setRange } =
+    useTestLineChart({});
 
   return (
     <View style={styles.container}>
       <Text>Line Chart</Text>
       <View style={styles.buttonGroup}>
-        <Pressable onPress={() => setRange(7)}>
-          <View style={getButtonStyle(7)}>
-            <Text>7 Days</Text>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => setRange(30)}>
-          <View style={getButtonStyle(30)}>
-            <Text>30 Days</Text>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => setRange(90)}>
-          <View style={getButtonStyle(90)}>
-            <Text>90 Days</Text>
-          </View>
-        </Pressable>
+        <View style={StyleSheet.absoluteFill}>
+          <Animated.View
+            style={[
+              styles.baseButton,
+              styles.buttonActive,
+              animatedChart.animatedButtonStyle,
+              { height: 38 },
+            ]}
+          />
+        </View>
+        {[7, 30, 90].map((item: 7 | 30 | 90, i) => (
+          <Pressable key={`range-${i}`} onPress={() => setRange(i)}>
+            <View
+              style={{
+                width: BUTTON_WIDTH,
+                padding: 10,
+                marginHorizontal: 10,
+                alignItems: "center",
+              }}
+            >
+              <Text>{item} Days</Text>
+            </View>
+          </Pressable>
+        ))}
       </View>
-      <LineChart
-        data={data.map((item) => ({
-          name: moment(item.date).format("MM-DD"),
-          value: item.value,
-        }))}
-      />
+      <View
+        ref={containerRef}
+        style={{
+          width: "100%",
+          height: height,
+          backgroundColor: "#E5E5E5",
+        }}
+      >
+        <Svg width={width} height={height}>
+          {/* {animatedChart.animatedProps.d && (
+            <AnimatedPath
+              animatedProps={animatedChart.animatedProps}
+              fill="transparent"
+              stroke="#00aaff"
+              strokeWidth={5}
+            />
+          )} */}
+          <Path
+            d={staticChart.d}
+            fill="transparent"
+            stroke="#00aaff"
+            strokeWidth={5}
+          />
+        </Svg>
+      </View>
     </View>
   );
 };
@@ -69,16 +83,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  button: {
+  baseButton: {
+    width: BUTTON_WIDTH,
     padding: 10,
-    borderWidth: 1,
-    borderColor: "black",
     marginHorizontal: 10,
+    alignItems: "center",
   },
   buttonActive: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "red",
-    marginHorizontal: 10,
+    backgroundColor: "#E0E0E0",
   },
 });
