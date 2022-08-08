@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import React from "react";
-import Animated from "react-native-reanimated";
 import Svg, { Path } from "react-native-svg";
+import Animated from "react-native-reanimated";
+import React from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useTestLineChart } from "../useTestLineChart.hook";
 
 export const BUTTON_WIDTH = 150;
