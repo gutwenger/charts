@@ -3,8 +3,9 @@ import { mixPath, parse } from "react-native-redash";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as d3Shape from 'd3-shape';
 
-import { BUTTON_WIDTH } from "./screens/LineChart.screen";
-import { getLineChartTestData } from "./testData/testData";
+import { Range } from './useTestLineChart.hook';
+
+import { seven, thirty, ninety } from './testData/testData';
 
 interface UseAnimatedLineChartParams {
   width: number;
@@ -15,36 +16,27 @@ interface UseAnimatedLineChartParams {
 export const useAnimatedLineChart = (params: UseAnimatedLineChartParams) => {
   const { width, height } = params;
 
-  const stats = useSharedValue([]);
+  const previous = useSharedValue<Range>(0);
+  const current = useSharedValue<Range>(0);
   const transition = useSharedValue(0);
-  const selected = useSharedValue(0);
   const translateX = useDerivedValue(
-    () => (BUTTON_WIDTH + 20) * selected.value
+    () => {
+      return (170) * current.value
+    }
   );
   const animatedButtonStyle = useAnimatedStyle(() => {
     return { transform: [{ translateX: translateX.value }] };
   });
 
-  const fetchData = (number) => {
-    const response = getLineChartTestData(number);
-    const prevData = stats.value?.[1] || [];
-    const newData = response.map((item) => ({
-      name: item.date,
-      value: item.value,
-    }));
-    const previousData = prevData.length === 0 ? newData : prevData;
-    const currentData = newData;
-    return [previousData, currentData];
-  }
-
   const setRange = (number) => {
-    stats.value = fetchData(number);
-    selected.value = withTiming(number);
+    previous.value = current.value;
+    current.value = withTiming(number);
     transition.value = 0;
     transition.value = withTiming(1);
   };
 
-  const getD = (data: Array<{ name: string; value: number }>) => {
+
+  function buildPath(data: Array<{ name: string; value: number }>) {
     if (!data || data.length === 0) return `M0 0 L${width} 0`;
 
     const getDomain = (domain: number[]) => [
@@ -60,32 +52,37 @@ export const useAnimatedLineChart = (params: UseAnimatedLineChartParams) => {
       .domain(getDomain(data.map((d) => d.value)))
       .range([height, 0]);
 
-    const result = d3Shape
-      .line<{ name: string; value: number }>()
-      .x((d, i) => scaleX(i))
-      .y((d) => scaleY(d.value))
-      .curve(d3Shape.curveBasis)(data) as string;
-
-    return result;
+    return d3Shape
+      .line()
+      .x(([, x]) => scaleX(x) as number)
+      .y(([y]) => scaleY(y) as number)
+      .curve(d3Shape.curveBasis)(data.map((d, i) => [i, d.value])) as string;
   };
 
+  const paths = useDerivedValue(() => {
+    const newData = current.value === 0 ? seven : current.value === 1 ? thirty : ninety;
+    const previousData = previous.value === 0 ? seven : previous.value === 1 ? thirty : ninety;
+    const currentPath = buildPath(newData);
+    const previousPath = buildPath(previousData);
+    return {
+      current: parse(currentPath), previous: parse(previousPath)
+    };
+  }).value;
+
   const animatedProps = useAnimatedProps(() => {
-    const [prevData, curData] = stats.value;
     const path = mixPath(
       transition.value,
-      parse(getD(prevData)),
-      parse(getD(curData)),
+      paths.previous,
+      paths.current
     );
     return {
-      // d: path
-      d: `M0 0 L${width} 0`
+      d: path
     }
   })
 
   return {
     animatedButtonStyle,
     animatedProps,
-    selected,
     transition,
     setRange,
   }

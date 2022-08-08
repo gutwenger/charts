@@ -14,7 +14,7 @@ interface useStaticLineChartParams {
 export const useStaticLineChart = (params: useStaticLineChartParams) => {
   const { width } = params;
 
-  const [selectedRange, setSelectedRange] = useState<Range>(7);
+  const [selectedRange, setSelectedRange] = useState<Range>(0);
   const [staticData, setStaticData] = useState(getLineChartTestData(selectedRange));
 
   useEffect(() => {
@@ -23,14 +23,14 @@ export const useStaticLineChart = (params: useStaticLineChartParams) => {
 
   const { d } = useD3({
     data: staticData.map((item) => ({
-      name: moment(item.date).format("YY-MM"),
+      name: item.name,
       value: item.value,
     })),
     width,
   });
 
   function setRange(value: number) {
-    const ranges: Array<Range> = [7, 30, 90];
+    const ranges: Array<Range> = [0, 1, 2];
     setSelectedRange(ranges[value]);
   }
 

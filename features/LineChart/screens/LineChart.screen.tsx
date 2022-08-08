@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { useTestLineChart } from "../useTestLineChart.hook";
 
-export const BUTTON_WIDTH = 150;
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 interface LineChartScreenProps {}
@@ -12,8 +11,6 @@ interface LineChartScreenProps {}
 export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
   const { containerRef, width, height, animatedChart, staticChart, setRange } =
     useTestLineChart({});
-
-  console.log("@animatedChart", animatedChart.animatedProps);
 
   return (
     <View style={styles.container}>
@@ -33,7 +30,7 @@ export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
           <Pressable key={`range-${i}`} onPress={() => setRange(i)}>
             <View
               style={{
-                width: BUTTON_WIDTH,
+                width: 150,
                 padding: 10,
                 marginHorizontal: 10,
                 alignItems: "center",
@@ -61,14 +58,14 @@ export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
             strokeWidth={5}
           />
         </Svg>
-        <Svg width={width} height={height}>
+        {/* <Svg width={width} height={height}>
           <AnimatedPath
             animatedProps={animatedChart.animatedProps}
             fill="transparent"
             stroke="#00aaff"
             strokeWidth={5}
           />
-        </Svg>
+        </Svg> */}
       </View>
     </View>
   );
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   baseButton: {
-    width: BUTTON_WIDTH,
+    width: 150,
     padding: 10,
     marginHorizontal: 10,
     alignItems: "center",

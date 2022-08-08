@@ -1,34 +1,34 @@
 import { Range } from '../useTestLineChart.hook';
 
-const seven = [
-  { date: "Sun Jul 31 2022 08:00:00 GMT+0800 (HKT)", value: 3640 },
-  { date: "Sat Jul 30 2022 08:00:00 GMT+0800 (HKT)", value: 3339 },
-  { date: "Fri Jul 29 2022 08:00:00 GMT+0800 (HKT)", value: 5993 },
-  { date: "Thu Jul 28 2022 08:00:00 GMT+0800 (HKT)", value: 1667 },
-  { date: "Wed Jul 27 2022 08:00:00 GMT+0800 (HKT)", value: 5386 },
-  { date: "Tue Jul 26 2022 08:00:00 GMT+0800 (HKT)", value: 4906 },
-  { date: "Mon Jul 25 2022 08:00:00 GMT+0800 (HKT)", value: 7952 },
+export const seven = [
+  { name: '25-07', value: 3640 },
+  { name: '26-07', value: 3339 },
+  { name: '27-07', value: 5993 },
+  { name: '28-07', value: 1667 },
+  { name: '29-07', value: 5386 },
+  { name: '30-07', value: 4906 },
+  { name: '31-07', value: 7952 },
 ]
 
-const thirty = [
-  { date: "Sun Jul 31 2022 08:00:00 GMT+0800 (HKT)", value: 1231 },
-  { date: "Sat Jul 30 2022 08:00:00 GMT+0800 (HKT)", value: 8964 },
-  { date: "Fri Jul 29 2022 08:00:00 GMT+0800 (HKT)", value: 7179 },
-  { date: "Thu Jul 28 2022 08:00:00 GMT+0800 (HKT)", value: 3948 },
-  { date: "Wed Jul 27 2022 08:00:00 GMT+0800 (HKT)", value: 9041 },
-  { date: "Tue Jul 26 2022 08:00:00 GMT+0800 (HKT)", value: 5064 },
-  { date: "Mon Jul 25 2022 08:00:00 GMT+0800 (HKT)", value: 2513 },
+export const thirty = [
+  { name: '25-07', value: 1231 },
+  { name: '26-07', value: 8964 },
+  { name: '27-07', value: 7179 },
+  { name: '28-07', value: 3948 },
+  { name: '29-07', value: 9041 },
+  { name: '30-07', value: 5064 },
+  { name: '31-07', value: 2513 },
 ]
 
 
-const ninety = [
-  { date: "Sun Jul 31 2022 08:00:00 GMT+0800 (HKT)", value: 6738 },
-  { date: "Sat Jul 30 2022 08:00:00 GMT+0800 (HKT)", value: 8263 },
-  { date: "Fri Jul 29 2022 08:00:00 GMT+0800 (HKT)", value: 1932 },
-  { date: "Thu Jul 28 2022 08:00:00 GMT+0800 (HKT)", value: 6372 },
-  { date: "Wed Jul 27 2022 08:00:00 GMT+0800 (HKT)", value: 1265 },
-  { date: "Tue Jul 26 2022 08:00:00 GMT+0800 (HKT)", value: 7590 },
-  { date: "Mon Jul 25 2022 08:00:00 GMT+0800 (HKT)", value: 4312 },
+export const ninety = [
+  { name: '25-07', value: 6738 },
+  { name: '26-07', value: 8263 },
+  { name: '27-07', value: 1932 },
+  { name: '28-07', value: 6372 },
+  { name: '29-07', value: 1265 },
+  { name: '30-07', value: 7590 },
+  { name: '31-07', value: 4312 },
 ]
 
 
@@ -47,11 +47,11 @@ const generate = (month: number, days: number) => {
 
 export const getLineChartTestData = (range: Range) => {
   switch (range) {
-    case 7:
+    case 0:
       return seven;
-    case 30:
+    case 1:
       return thirty;
-    case 90:
+    case 2:
       return ninety;
     default:
       return seven;
