@@ -62,14 +62,12 @@ export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
           />
         </Svg>
         <Svg width={width} height={height}>
-          {animatedChart.animatedProps.d && (
-            <AnimatedPath
-              animatedProps={animatedChart.animatedProps}
-              fill="transparent"
-              stroke="#00aaff"
-              strokeWidth={5}
-            />
-          )}
+          <AnimatedPath
+            animatedProps={animatedChart.animatedProps}
+            fill="transparent"
+            stroke="#00aaff"
+            strokeWidth={5}
+          />
         </Svg>
       </View>
     </View>

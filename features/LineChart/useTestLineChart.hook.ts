@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useWindowDimensions, View } from "react-native";
 import { useAnimatedLineChart } from "./useAnimatedLineChart.hook";
 import { useStaticLineChart } from "./useStaticLineChart.hook";
 
 export type Range = 7 | 30 | 90;
-
 
 interface UseTestLineChartParams {
 
