@@ -1,11 +1,11 @@
 import { useAnimatedProps, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
+import { mixPath, parse } from "react-native-redash";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as d3Shape from 'd3-shape';
 
 import { BUTTON_WIDTH } from "./screens/LineChart.screen";
 import { getLineChartTestData } from "./testData/testData";
 import { Range } from './useTestLineChart.hook';
-import { mixPath, parse } from "react-native-redash";
 
 interface UseAnimatedLineChartParams {
   width: number;
@@ -29,7 +29,7 @@ export const useAnimatedLineChart = (params: UseAnimatedLineChartParams) => {
   });
 
   const getD = (data: Array<{ name: string; value: number }>) => {
-    if (!data || data.length === 0) return `M 0 0 L ${width} 0`;
+    if (!data || data.length === 0) return `M0 0 L${width} 0`;
 
     const getDomain = (domain: number[]) => [
       Math.min(...domain),
@@ -53,13 +53,9 @@ export const useAnimatedLineChart = (params: UseAnimatedLineChartParams) => {
     return result;
   };
 
-  function getTestData(number: Range) {
-    return getLineChartTestData(number);
-  }
-
   const setRange = (number) => {
     const prevData = stats.value?.[1] || [];
-    const newData = getTestData(number);
+    const newData = getLineChartTestData(number);
     const parsedNewData = newData.map((item) => ({
       name: item.date,
       value: item.value,

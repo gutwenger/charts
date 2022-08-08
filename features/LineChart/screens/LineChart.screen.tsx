@@ -1,7 +1,7 @@
 import Svg, { Path } from "react-native-svg";
 import Animated from "react-native-reanimated";
-import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import React from "react";
 import { useTestLineChart } from "../useTestLineChart.hook";
 
 export const BUTTON_WIDTH = 150;
@@ -12,6 +12,8 @@ interface LineChartScreenProps {}
 export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
   const { containerRef, width, height, animatedChart, staticChart, setRange } =
     useTestLineChart({});
+
+  console.log("@animatedChart", animatedChart.animatedProps);
 
   return (
     <View style={styles.container}>
@@ -46,25 +48,28 @@ export const LineChartScreen: React.FC<LineChartScreenProps> = (props) => {
         ref={containerRef}
         style={{
           width: "100%",
-          height: height,
+          height: height * 2,
           backgroundColor: "#E5E5E5",
+          flexDirection: "column",
         }}
       >
         <Svg width={width} height={height}>
-          {/* {animatedChart.animatedProps.d && (
-            <AnimatedPath
-              animatedProps={animatedChart.animatedProps}
-              fill="transparent"
-              stroke="#00aaff"
-              strokeWidth={5}
-            />
-          )} */}
           <Path
             d={staticChart.d}
             fill="transparent"
             stroke="#00aaff"
             strokeWidth={5}
           />
+        </Svg>
+        <Svg width={width} height={height}>
+          {animatedChart.animatedProps.d && (
+            <AnimatedPath
+              animatedProps={animatedChart.animatedProps}
+              fill="transparent"
+              stroke="#00aaff"
+              strokeWidth={5}
+            />
+          )}
         </Svg>
       </View>
     </View>

@@ -1,8 +1,10 @@
+import moment from "moment";
 import { useEffect, useState } from "react";
-import { getLineChartTestData } from './testData/testData';
+
 import { useD3 } from "../useD3.hook";
 import { Range } from './useTestLineChart.hook';
-import moment from "moment";
+
+import { getLineChartTestData } from './testData/testData';
 
 interface useStaticLineChartParams {
   width: number;
@@ -13,15 +15,11 @@ export const useStaticLineChart = (params: useStaticLineChartParams) => {
   const { width } = params;
 
   const [selectedRange, setSelectedRange] = useState<Range>(7);
-  const [staticData, setStaticData] = useState(getTestData(selectedRange));
+  const [staticData, setStaticData] = useState(getLineChartTestData(selectedRange));
 
   useEffect(() => {
-    setStaticData(getTestData(selectedRange));
+    setStaticData(getLineChartTestData(selectedRange));
   }, [selectedRange]);
-
-  function getTestData(number: Range) {
-    return getLineChartTestData(number);
-  }
 
   const { d } = useD3({
     data: staticData.map((item) => ({

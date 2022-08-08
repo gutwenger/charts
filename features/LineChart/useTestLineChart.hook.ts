@@ -17,8 +17,7 @@ export const useTestLineChart = (params: UseTestLineChartParams) => {
   const height = useMemo(() => {
     const φ = (1 + Math.sqrt(3)) / 2;
     return (1 - 1 / φ) * width;
-  }, [dimensions.width]);
-
+  }, [dimensions.width, containerRef.current]);
 
   const animatedChart = useAnimatedLineChart({
     width,
